@@ -17,6 +17,7 @@ void AMovingPlatform::BeginPlay()
 	Super::BeginPlay();
 
 	StartLocation = GetActorLocation();
+	Forward = GetActorForwardVector();
 
 	FString Name = GetName();
 
@@ -39,15 +40,14 @@ void AMovingPlatform::MovePlatform(float DeltaTime)
 {
 	if (ShouldPlatformReturn())
 	{
-		FVector MoveDirection = PlatformVelocity.GetSafeNormal();
-		StartLocation = StartLocation + MoveDirection * MoveDistance;
+		StartLocation = StartLocation + Forward * MoveDistance;
 		SetActorLocation(StartLocation);
-		PlatformVelocity = -PlatformVelocity;
+		Forward = -Forward;
 	}
 	else
 	{
 		FVector CurentLocation = GetActorLocation();
-		CurentLocation = CurentLocation + PlatformVelocity * DeltaTime;
+		CurentLocation = CurentLocation + Forward * MoveSpeed * DeltaTime;
 		SetActorLocation(CurentLocation);
 	}
 }
